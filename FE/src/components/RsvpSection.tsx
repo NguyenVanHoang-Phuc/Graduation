@@ -139,8 +139,9 @@ export default function RsvpSection({
               {/* Contact Info (Grid 2 cols) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#eedec2] uppercase tracking-wider mb-2">
-                    Số điện thoại
+                  <label className="block text-xs font-bold text-[#eedec2] uppercase tracking-wider mb-2 flex items-center justify-between">
+                    <span>Số điện thoại</span>
+                    <span className="text-[10px] text-[#c5a880] normal-case font-normal">(Tùy chọn)</span>
                   </label>
                   <div className="relative">
                     <Phone className="w-4 h-4 text-[#c5a880] absolute left-4 top-1/2 -translate-y-1/2" />
@@ -148,15 +149,16 @@ export default function RsvpSection({
                       type="tel"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="0912 345 678"
+                      placeholder="0912 345 678 (không bắt buộc)"
                       className="w-full bg-[#101316] border border-[#e5d0ac]/25 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm text-slate-100 placeholder-[#eedec2]/40 focus:outline-none focus:border-[#dfb773] transition-all shadow-inner"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#eedec2] uppercase tracking-wider mb-2">
-                    Địa chỉ Email
+                  <label className="block text-xs font-bold text-[#eedec2] uppercase tracking-wider mb-2 flex items-center justify-between">
+                    <span>Địa chỉ Email</span>
+                    <span className="text-[10px] text-[#c5a880] normal-case font-normal">(Tùy chọn)</span>
                   </label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-[#c5a880] absolute left-4 top-1/2 -translate-y-1/2" />
@@ -164,7 +166,7 @@ export default function RsvpSection({
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="ban@example.com"
+                      placeholder="ban@example.com (không bắt buộc)"
                       className="w-full bg-[#101316] border border-[#e5d0ac]/25 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm text-slate-100 placeholder-[#eedec2]/40 focus:outline-none focus:border-[#dfb773] transition-all shadow-inner"
                     />
                   </div>

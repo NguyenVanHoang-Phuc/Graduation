@@ -9,8 +9,10 @@ import {
   SummaryStats,
 } from "@/types";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const rawUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5253/api";
+const API_BASE_URL = rawUrl.endsWith("/api")
+  ? rawUrl
+  : `${rawUrl.replace(/\/+$/, "")}/api`;
 
 const fallbackCeremony: CeremonyInfo = {
   id: "00000000-0000-0000-0000-000000000001",

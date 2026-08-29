@@ -1,149 +1,102 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX, Music, Sparkles } from "lucide-react";
+import { Music, Volume2, VolumeX, Disc, Play, Pause } from "lucide-react";
 
 export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [audioLoaded, setAudioLoaded] = useState(false);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const isSynthesizingRef = useRef(false);
-
-  // Celebratory graduation theme synthesizer using Web Audio API (zero external broken MP3 links)
-  const playGraduationTheme = () => {
-    try {
-      if (!audioContextRef.current) {
-        const AudioContextClass =
-          window.AudioContext ||
-          (window as unknown as { webkitAudioContext: typeof AudioContext })
-            .webkitAudioContext;
-        audioContextRef.current = new AudioContextClass();
-      }
-
-      const ctx = audioContextRef.current;
-      if (ctx.state === "suspended") {
-        ctx.resume();
-      }
-
-      isSynthesizingRef.current = true;
-      setIsPlaying(true);
-
-      // Melody notes for Gaudeamus / Celebration (Pomp and Circumstance style fanfare)
-      // Frequencies: C4, D4, E4, F4, G4, A4, B4, C5
-      const notes = [
-        { freq: 261.63, dur: 0.5 }, // C4
-        { freq: 329.63, dur: 0.5 }, // E4
-        { freq: 392.0, dur: 0.75 }, // G4
-        { freq: 523.25, dur: 1.0 }, // C5
-        { freq: 493.88, dur: 0.5 }, // B4
-        { freq: 440.0, dur: 0.5 }, // A4
-        { freq: 392.0, dur: 1.0 }, // G4
-        { freq: 349.23, dur: 0.5 }, // F4
-        { freq: 329.63, dur: 0.5 }, // E4
-        { freq: 293.66, dur: 0.75 }, // D4
-        { freq: 261.63, dur: 1.25 }, // C4
-      ];
-
-      let startTime = ctx.currentTime + 0.1;
-
-      const scheduleLoop = () => {
-        if (!isSynthesizingRef.current) return;
-
-        notes.forEach((note) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-
-          osc.type = "sine";
-          osc.frequency.setValueAtTime(note.freq, startTime);
-
-          // Soft bell-like envelope
-          gain.gain.setValueAtTime(0.001, startTime);
-          gain.gain.exponentialRampToValueAtTime(0.12, startTime + 0.05);
-          gain.gain.exponentialRampToValueAtTime(0.001, startTime + note.dur - 0.05);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(startTime);
-          osc.stop(startTime + note.dur);
-
-          startTime += note.dur;
-        });
-
-        // Loop after melody finishes
-        const totalDuration = notes.reduce((sum, n) => sum + n.dur, 0);
-        setTimeout(() => {
-          if (isSynthesizingRef.current) {
-            startTime = ctx.currentTime + 0.2;
-            scheduleLoop();
-          }
-        }, totalDuration * 1000);
-      };
-
-      scheduleLoop();
-      setAudioLoaded(true);
-    } catch {
-      setIsPlaying(false);
-    }
-  };
-
-  const stopMusic = () => {
-    isSynthesizingRef.current = false;
-    setIsPlaying(false);
-    if (audioContextRef.current && audioContextRef.current.state === "running") {
-      audioContextRef.current.suspend();
-    }
-  };
-
-  const toggleMusic = () => {
-    if (isPlaying) {
-      stopMusic();
-    } else {
-      playGraduationTheme();
-    }
-  };
+  const [hasLoaded, setHasLoaded] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    // Create audio element for Nụ Cười 18 20 (Lofi)
+    const audio = new Audio("/music.mp3");
+    audio.loop = true;
+    audio.preload = "auto";
+    audio.volume = 0.8;
+
+    audio.addEventListener("canplaythrough", () => {
+      setHasLoaded(true);
+    });
+
+    audio.addEventListener("play", () => setIsPlaying(true));
+    audio.addEventListener("pause", () => setIsPlaying(false));
+    audio.addEventListener("ended", () => setIsPlaying(false));
+
+    audioRef.current = audio;
+
     return () => {
-      isSynthesizingRef.current = false;
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
+      audio.pause();
+      audio.src = "";
     };
   }, []);
 
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((err) => {
+          console.warn("Audio play blocked by browser autoplay policy:", err);
+        });
+    }
+  };
+
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 right-4 z-50">
       <button
         onClick={toggleMusic}
-        aria-label="Toggle background music"
-        className={`group flex items-center gap-3 px-4 py-3 rounded-full backdrop-blur-xl border transition-all duration-300 shadow-2xl ${
+        aria-label={isPlaying ? "Tạm dừng nhạc" : "Phát nhạc Nụ Cười 18 20"}
+        className={`group flex items-center gap-2.5 px-3.5 py-2.5 sm:px-4 sm:py-2.5 rounded-full backdrop-blur-xl border transition-all duration-300 shadow-2xl ${
           isPlaying
-            ? "bg-amber-500/20 border-amber-500/50 text-amber-300 shadow-amber-500/20 ring-2 ring-amber-500/30"
-            : "bg-slate-900/80 border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500"
+            ? "bg-[#dfb773]/25 border-[#dfb773]/70 text-[#fef3c7] shadow-[0_0_25px_rgba(223,183,115,0.35)] ring-2 ring-[#dfb773]/40"
+            : "bg-[#181c21]/95 border-[#e5d0ac]/25 text-[#eedec2] hover:text-white hover:border-[#dfb773] hover:scale-105"
         }`}
       >
+        {/* Vinyl Disc Icon */}
         <div className="relative">
-          {isPlaying ? (
-            <div className="flex items-center gap-0.5 h-4">
-              <span className="w-1 bg-amber-400 h-full animate-bounce rounded-full" />
-              <span className="w-1 bg-amber-400 h-2/3 animate-bounce [animation-delay:0.2s] rounded-full" />
-              <span className="w-1 bg-amber-400 h-4/5 animate-bounce [animation-delay:0.4s] rounded-full" />
+          <div
+            className={`w-6 h-6 rounded-full bg-[#1c2228] border border-[#dfb773]/50 flex items-center justify-center text-[#dfb773] shadow-inner ${
+              isPlaying ? "animate-spin [animation-duration:3s]" : ""
+            }`}
+          >
+            <Disc className="w-3.5 h-3.5" />
+          </div>
+
+          {/* Equalizer Wave Animation while playing */}
+          {isPlaying && (
+            <div className="absolute -bottom-1 -right-1 flex items-end gap-0.5 h-3 bg-[#111417] px-1 py-0.5 rounded-full border border-[#dfb773]/40">
+              <span className="w-0.5 bg-[#dfb773] h-full animate-bounce rounded-full" />
+              <span className="w-0.5 bg-[#dfb773] h-2/3 animate-bounce [animation-delay:0.2s] rounded-full" />
+              <span className="w-0.5 bg-[#dfb773] h-4/5 animate-bounce [animation-delay:0.4s] rounded-full" />
             </div>
-          ) : (
-            <Music className="w-4 h-4 text-slate-400 group-hover:text-amber-400 transition-colors" />
           )}
         </div>
 
-        <span className="text-xs font-medium tracking-wide">
-          {isPlaying ? "Nhạc Lễ Tốt Nghiệp" : "Bật Nhạc Nền"}
-        </span>
+        {/* Track Title & Status */}
+        <div className="flex flex-col text-left pr-1">
+          <span className="text-[11px] sm:text-xs font-serif-luxury font-bold text-[#fcf8f0] leading-tight">
+            Nụ Cười 18 20
+          </span>
+          <span className="text-[9px] text-[#dfb773] font-medium tracking-wide">
+            {isPlaying ? "Đang phát • Lofi" : "Bấm để nghe nhạc"}
+          </span>
+        </div>
 
-        {isPlaying ? (
-          <Volume2 className="w-4 h-4 text-amber-400" />
-        ) : (
-          <VolumeX className="w-4 h-4 text-slate-400" />
-        )}
+        {/* Play / Pause Toggle Icon */}
+        <div className="w-6 h-6 rounded-full bg-[#dfb773]/15 border border-[#dfb773]/30 flex items-center justify-center text-[#dfb773] group-hover:bg-[#dfb773]/30 transition-colors">
+          {isPlaying ? (
+            <Pause className="w-3 h-3 fill-[#dfb773]" />
+          ) : (
+            <Play className="w-3 h-3 fill-[#dfb773] translate-x-0.5" />
+          )}
+        </div>
       </button>
     </div>
   );

@@ -189,19 +189,19 @@ export default function HeroSection({ ceremony }: HeroSectionProps) {
               <div className="absolute top-24 right-1/4 w-2.5 h-2.5 rounded-full bg-[#d4af37] shadow-[0_0_15px_#d4af37] animate-dust pointer-events-none delay-700" />
 
               {/* --- TOP CONTENT OVERLAY --- */}
-              <div className="absolute top-6 inset-x-0 flex flex-col items-center text-center px-4 z-10">
+              <div className="absolute top-4 sm:top-6 inset-x-0 flex flex-col items-center text-center px-3 z-10">
                 {/* Cursive Calligraphy Header */}
-                <h2 className="font-script text-5xl sm:text-6xl text-[#fbf5e8] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] tracking-wide mb-2">
+                <h2 className="font-script text-[42px] sm:text-6xl text-[#fbf5e8] drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] tracking-wide leading-none mb-1.5">
                   Happy Graduation
                 </h2>
 
                 {/* Faculty & University Pill */}
-                <div className="px-3.5 py-1 rounded-full bg-[#121517]/85 backdrop-blur-md border border-[#e5d0ac]/35 text-[11px] sm:text-xs text-[#eedec2] font-semibold tracking-wide shadow-xl max-w-[92%] line-clamp-1 mb-2">
+                <div className="px-3 py-0.5 rounded-full bg-[#121517]/85 backdrop-blur-md border border-[#e5d0ac]/35 text-[9.5px] sm:text-xs text-[#eedec2] font-semibold tracking-wide shadow-xl max-w-[95%] mb-1.5">
                   {ceremony.faculty}
                 </div>
 
                 {/* Date & University Pill */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#121517]/90 backdrop-blur-md border border-[#e5d0ac]/45 text-[10px] sm:text-[11px] text-[#f7eedc] font-bold tracking-wider shadow-xl">
+                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#121517]/90 backdrop-blur-md border border-[#e5d0ac]/45 text-[9px] sm:text-[11px] text-[#f7eedc] font-bold tracking-wider shadow-xl">
                   <Calendar className="w-3 h-3 text-[#dfb773]" />
                   <span className="capitalize">{formattedDate}</span>
                   <span className="text-[#dfb773]">•</span>
@@ -210,18 +210,18 @@ export default function HeroSection({ ceremony }: HeroSectionProps) {
               </div>
 
               {/* --- GRADUATE NAME (Editorial Serif) --- */}
-              <div className="absolute right-5 bottom-24 text-right z-10 max-w-[72%] bg-[#121517]/75 backdrop-blur-md p-3.5 rounded-2xl border border-[#e5d0ac]/25 shadow-2xl">
-                <h1 className="font-serif-luxury text-xl sm:text-2xl font-bold text-[#fcf8f0] leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+              <div className="absolute right-4 bottom-20 sm:bottom-24 text-right z-10 max-w-[68%] bg-[#121517]/80 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl border border-[#e5d0ac]/25 shadow-2xl">
+                <h1 className="font-serif-luxury text-lg sm:text-2xl font-bold text-[#fcf8f0] leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                   {ceremony.graduateName}
                 </h1>
-                <p className="font-serif-luxury italic text-xs text-[#dfb773] mt-1 font-semibold">
+                <p className="font-serif-luxury italic text-[11px] sm:text-xs text-[#dfb773] mt-0.5 font-semibold">
                   {ceremony.degree || ceremony.major}
                 </p>
               </div>
 
               {/* --- BOTTOM LEFT: SCRIPT CALLIGRAPHY FLOURISH --- */}
-              <div className="absolute bottom-6 left-5 z-10">
-                <span className="font-script text-3xl sm:text-4xl text-[#f3e5ab] drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)] leading-none block transform -rotate-6">
+              <div className="absolute bottom-5 left-4 z-10">
+                <span className="font-script text-2xl sm:text-4xl text-[#f3e5ab] drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)] leading-none block transform -rotate-6">
                   Graduate The <br /> Golden Chapter
                 </span>
               </div>

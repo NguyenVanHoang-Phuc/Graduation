@@ -33,3 +33,6 @@ yarn-error.log*
 Thumbs.db
 desktop.ini
 *.log
+BE/src/API/.env
+BE/src/API/appsettings.json
+BE/src/API/appsettings.Production.json

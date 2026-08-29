@@ -56,81 +56,14 @@ export default function SummarizePage() {
   });
 
   const [stats, setStats] = useState<SummaryStats>({
-    totalRsvps: 2,
-    totalConfirmedGuests: 3,
-    totalWishes: 4,
-    totalLikes: 90,
+    totalRsvps: 0,
+    totalConfirmedGuests: 0,
+    totalWishes: 0,
+    totalLikes: 0,
   });
 
-  const [rsvps, setRsvps] = useState<GuestRsvp[]>([
-    {
-      id: "1",
-      fullName: "Nguyễn Văn Hùng",
-      email: "hung.nv@gmail.com",
-      phoneNumber: "0912345678",
-      attendanceStatus: "Attending",
-      numberOfGuests: 2,
-      notes: "Sẽ đến sớm cùng bạn gái tặng hoa nhé!",
-      checkInCode: "GRD801",
-      isCheckedIn: false,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: "2",
-      fullName: "Trần Thị Mai",
-      email: "mai.tt@outlook.com",
-      phoneNumber: "0934567890",
-      attendanceStatus: "AttendingCeremonyOnly",
-      numberOfGuests: 1,
-      notes: "Chúc mừng Phúc tốt nghiệp!",
-      checkInCode: "GRD802",
-      isCheckedIn: false,
-      createdAt: new Date().toISOString(),
-    },
-  ]);
-
-  const [wishes, setWishes] = useState<GraduationWish[]>([
-    {
-      id: "w1",
-      senderName: "Minh Tuấn (Team Lead)",
-      relationship: "Đồng nghiệp",
-      message: "Chúc mừng Tân Kỹ Sư tài năng! Chúc em luôn giữ vững ngọn lửa đam mê, bứt phá mạnh mẽ trên con đường sự nghiệp phía trước nhé!",
-      avatarBgColor: "#3b82f6",
-      emoji: "🎉",
-      likesCount: 12,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: "w2",
-      senderName: "Lan Anh & Nhóm Bạn Thân",
-      relationship: "Bạn Đại Học",
-      message: "Chúc mừng bạn tốt nghiệp xuất sắc! 4 năm thanh xuân cùng nhau thức đêm ôn thi cuối cùng cũng hái quả ngọt rồi. Mãi tự hào về bạn!",
-      avatarBgColor: "#ec4899",
-      emoji: "🎓",
-      likesCount: 28,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: "w3",
-      senderName: "Chú Ba & Cô Bảy",
-      relationship: "Gia đình",
-      message: "Chúc mừng cháu trai đã hoàn thành xuất sắc chặng đường đại học. Cả nhà luôn tự hào về con, chúc con luôn mạnh khỏe và thành công rực rỡ!",
-      avatarBgColor: "#eab308",
-      emoji: "💐",
-      likesCount: 35,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: "w4",
-      senderName: "Quốc Bảo",
-      relationship: "Bạn Cấp 3",
-      message: "Chúc mừng bro nhé! Hẹn ngày tốt nghiệp gặp nhau quẩy hết mình, nâng ly chúc mừng kỹ sư công nghệ mới ra lò!",
-      avatarBgColor: "#10b981",
-      emoji: "🍻",
-      likesCount: 15,
-      createdAt: new Date().toISOString(),
-    },
-  ]);
+  const [rsvps, setRsvps] = useState<GuestRsvp[]>([]);
+  const [wishes, setWishes] = useState<GraduationWish[]>([]);
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"guests" | "wishes">("guests");

@@ -64,80 +64,15 @@ public class GraduationDbContext : DbContext
             CeremonySettings.Update(existingCeremony);
         }
 
-        if (!await GraduationWishes.AnyAsync())
+        // Clean up test data if any
+        if (await GuestRsvps.AnyAsync())
         {
-            var initialWishes = new List<GraduationWish>
-            {
-                new()
-                {
-                    SenderName = "Minh Tuấn (Team Lead)",
-                    Relationship = "Đồng nghiệp",
-                    Message = "Chúc mừng Tân Kỹ Sư tài năng! Chúc em luôn giữ vững ngọn lửa đam mê, bứt phá mạnh mẽ trên con đường sự nghiệp phía trước nhé!",
-                    AvatarBgColor = "#3b82f6",
-                    Emoji = "🎉",
-                    LikesCount = 12
-                },
-                new()
-                {
-                    SenderName = "Lan Anh & Nhóm Bạn Thân",
-                    Relationship = "Bạn Đại Học",
-                    Message = "Chúc mừng bạn tốt nghiệp xuất sắc! 4 năm thanh xuân cùng nhau thức đêm ôn thi cuối cùng cũng hái quả ngọt rồi. Mãi tự hào về bạn!",
-                    AvatarBgColor = "#ec4899",
-                    Emoji = "🎓",
-                    LikesCount = 28
-                },
-                new()
-                {
-                    SenderName = "Chú Ba & Cô Bảy",
-                    Relationship = "Gia đình",
-                    Message = "Chúc mừng cháu trai đã hoàn thành xuất sắc chặng đường đại học. Cả nhà luôn tự hào về con, chúc con luôn mạnh khỏe và thành công rực rỡ!",
-                    AvatarBgColor = "#eab308",
-                    Emoji = "💐",
-                    LikesCount = 35
-                },
-                new()
-                {
-                    SenderName = "Quốc Bảo",
-                    Relationship = "Bạn Cấp 3",
-                    Message = "Chúc mừng bro nhé! Hẹn ngày tốt nghiệp gặp nhau quẩy hết mình, uống cạn ly chúc mừng kỹ sư công nghệ mới ra lò!",
-                    AvatarBgColor = "#10b981",
-                    Emoji = "🍻",
-                    LikesCount = 15
-                }
-            };
-
-            await GraduationWishes.AddRangeAsync(initialWishes);
+            GuestRsvps.RemoveRange(GuestRsvps);
         }
 
-        if (!await GuestRsvps.AnyAsync())
+        if (await GraduationWishes.AnyAsync())
         {
-            var initialRsvps = new List<GuestRsvp>
-            {
-                new()
-                {
-                    FullName = "Nguyễn Văn Hùng",
-                    Email = "hung.nv@gmail.com",
-                    PhoneNumber = "0912345678",
-                    AttendanceStatus = AttendanceStatus.Attending,
-                    NumberOfGuests = 2,
-                    Notes = "Sẽ đến sớm cùng bạn gái tặng hoa nhé!",
-                    CheckInCode = "GRD801",
-                    IsCheckedIn = false
-                },
-                new()
-                {
-                    FullName = "Trần Thị Mai",
-                    Email = "mai.tt@outlook.com",
-                    PhoneNumber = "0934567890",
-                    AttendanceStatus = AttendanceStatus.AttendingCeremonyOnly,
-                    NumberOfGuests = 1,
-                    Notes = "Chúc mừng Long!",
-                    CheckInCode = "GRD802",
-                    IsCheckedIn = false
-                }
-            };
-
-            await GuestRsvps.AddRangeAsync(initialRsvps);
+            GraduationWishes.RemoveRange(GraduationWishes);
         }
 
         await SaveChangesAsync();

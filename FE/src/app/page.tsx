@@ -14,10 +14,10 @@ import { GraduationCap, Heart } from "lucide-react";
 export default function Home() {
   const [ceremony, setCeremony] = useState<CeremonyInfo | null>(null);
   const [stats, setStats] = useState<SummaryStats>({
-    totalRsvps: 2,
-    totalConfirmedGuests: 3,
-    totalWishes: 4,
-    totalLikes: 90,
+    totalRsvps: 0,
+    totalConfirmedGuests: 0,
+    totalWishes: 0,
+    totalLikes: 0,
   });
 
   const loadData = async () => {

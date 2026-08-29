@@ -55,18 +55,18 @@ export async function fetchSummaryStats(): Promise<SummaryStats> {
     const json: ApiResponse<SummaryStats> = await res.json();
     return (
       json.data || {
-        totalRsvps: 2,
-        totalConfirmedGuests: 3,
-        totalWishes: 4,
-        totalLikes: 90,
+        totalRsvps: 0,
+        totalConfirmedGuests: 0,
+        totalWishes: 0,
+        totalLikes: 0,
       }
     );
   } catch {
     return {
-      totalRsvps: 2,
-      totalConfirmedGuests: 3,
-      totalWishes: 4,
-      totalLikes: 90,
+      totalRsvps: 0,
+      totalConfirmedGuests: 0,
+      totalWishes: 0,
+      totalLikes: 0,
     };
   }
 }

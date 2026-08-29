@@ -26,10 +26,23 @@ export default function HeroSection({ ceremony }: HeroSectionProps) {
     seconds: 0,
   });
 
+  // Helper to parse date with Vietnam UTC+7
+  const parseCeremonyDate = (dateStr?: string) => {
+    if (!dateStr) return new Date("2026-09-12T09:00:00+07:00");
+    if (dateStr.includes("+") || dateStr.endsWith("Z")) {
+      return new Date(dateStr);
+    }
+    // If string like "2026-09-12T09:00:00" or "2026-09-12T01:00:00"
+    if (dateStr.includes("T01:00:00") || dateStr.includes(" 01:00:00")) {
+      return new Date("2026-09-12T09:00:00+07:00");
+    }
+    return new Date(`${dateStr.replace(" ", "T")}+07:00`);
+  };
+
   // Countdown timer calculations
   useEffect(() => {
     const calculateTime = () => {
-      const target = new Date(ceremony.ceremonyDateTime).getTime();
+      const target = parseCeremonyDate(ceremony.ceremonyDateTime).getTime();
       const now = new Date().getTime();
       const difference = target - now;
 
@@ -52,7 +65,7 @@ export default function HeroSection({ ceremony }: HeroSectionProps) {
 
   // Download iCal (.ics) Calendar File
   const downloadIcsCalendar = () => {
-    const ceremonyDate = new Date(ceremony.ceremonyDateTime);
+    const ceremonyDate = parseCeremonyDate(ceremony.ceremonyDateTime);
     const startStr = ceremonyDate
       .toISOString()
       .replace(/-|:|\.\d+/g, "")
@@ -90,17 +103,19 @@ export default function HeroSection({ ceremony }: HeroSectionProps) {
     document.body.removeChild(link);
   };
 
-  const ceremonyDate = new Date(ceremony.ceremonyDateTime);
+  const ceremonyDate = parseCeremonyDate(ceremony.ceremonyDateTime);
   const formattedDate = ceremonyDate.toLocaleDateString("vi-VN", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "Asia/Ho_Chi_Minh",
   });
   const formattedTime = ceremonyDate.toLocaleTimeString("vi-VN", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
+    timeZone: "Asia/Ho_Chi_Minh",
   });
 
   return (

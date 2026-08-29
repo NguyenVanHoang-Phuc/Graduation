@@ -22,7 +22,7 @@ const fallbackCeremony: CeremonyInfo = {
   major: "Kỹ Thuật Phần Mềm (Software Engineering)",
   universityName: "Trường Đại học FPT Đà Nẵng",
   faculty: "Khoa Công nghệ thông tin và Kỹ thuật phần mềm",
-  ceremonyDateTime: "2026-09-12T08:00:00+07:00",
+  ceremonyDateTime: "2026-09-12T09:00:00+07:00",
   venueName: "Đại học FPT Đà Nẵng",
   hall: "Khuôn viên Đại học FPT Đà Nẵng",
   address: "Đại học FPT Đà Nẵng",

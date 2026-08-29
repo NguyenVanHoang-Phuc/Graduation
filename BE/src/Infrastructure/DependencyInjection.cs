@@ -51,6 +51,7 @@ public static class DependencyInjection
         services.AddScoped<IRsvpService, RsvpService>();
         services.AddScoped<IWishService, WishService>();
         services.AddScoped<ICeremonyService, CeremonyService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         return services;
     }

@@ -33,7 +33,7 @@ public class GraduationDbContext : DbContext
                 Major = "Kỹ Thuật Phần Mềm (Software Engineering)",
                 UniversityName = "Trường Đại học FPT Đà Nẵng",
                 Faculty = "Khoa Công nghệ thông tin và Kỹ thuật phần mềm",
-                CeremonyDateTime = new DateTime(2026, 9, 12, 1, 0, 0, DateTimeKind.Utc), // 08:00 AM Vietnam Time (UTC+7)
+                CeremonyDateTime = new DateTime(2026, 9, 12, 9, 0, 0, DateTimeKind.Unspecified), // 09:00 AM Vietnam Time
                 VenueName = "Đại học FPT Đà Nẵng",
                 Hall = "Khuôn viên Đại học FPT Đà Nẵng",
                 Address = "Đại học FPT Đà Nẵng",
@@ -51,7 +51,7 @@ public class GraduationDbContext : DbContext
             existingCeremony.GraduateName = "Nguyễn Văn Hoàng Phúc";
             existingCeremony.UniversityName = "Trường Đại học FPT Đà Nẵng";
             existingCeremony.Faculty = "Khoa Công nghệ thông tin và Kỹ thuật phần mềm";
-            existingCeremony.CeremonyDateTime = new DateTime(2026, 9, 12, 1, 0, 0, DateTimeKind.Utc); // 08:00 AM Vietnam Time (UTC+7)
+            existingCeremony.CeremonyDateTime = new DateTime(2026, 9, 12, 9, 0, 0, DateTimeKind.Unspecified); // 09:00 AM Vietnam Time
             existingCeremony.VenueName = "Đại học FPT Đà Nẵng";
             existingCeremony.Hall = "Khuôn viên Đại học FPT Đà Nẵng";
             existingCeremony.Address = "Đại học FPT Đà Nẵng";
@@ -62,17 +62,6 @@ public class GraduationDbContext : DbContext
             existingCeremony.AgendaJson = null;
             existingCeremony.MemoriesJson = null;
             CeremonySettings.Update(existingCeremony);
-        }
-
-        // Clean up test data if any
-        if (await GuestRsvps.AnyAsync())
-        {
-            GuestRsvps.RemoveRange(GuestRsvps);
-        }
-
-        if (await GraduationWishes.AnyAsync())
-        {
-            GraduationWishes.RemoveRange(GraduationWishes);
         }
 
         await SaveChangesAsync();

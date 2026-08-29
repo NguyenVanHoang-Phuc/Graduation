@@ -14,16 +14,27 @@ public class RsvpService : IRsvpService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IValidator<CreateRsvpDto> _validator;
+    private readonly IEmailService _emailService;
 
-    public RsvpService(IUnitOfWork unitOfWork, IMapper mapper, IValidator<CreateRsvpDto> validator)
+    public RsvpService(
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IValidator<CreateRsvpDto> validator,
+        IEmailService emailService)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _validator = validator;
+        _emailService = emailService;
     }
 
     public async Task<RsvpDto> CreateRsvpAsync(CreateRsvpDto dto, CancellationToken cancellationToken = default)
     {
+        dto.FullName = dto.FullName?.Trim() ?? string.Empty;
+        dto.Email = string.IsNullOrWhiteSpace(dto.Email) ? null : dto.Email.Trim();
+        dto.PhoneNumber = string.IsNullOrWhiteSpace(dto.PhoneNumber) ? null : dto.PhoneNumber.Trim();
+        dto.Notes = string.IsNullOrWhiteSpace(dto.Notes) ? null : dto.Notes.Trim();
+
         var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
         if (!validationResult.IsValid)
         {
@@ -39,6 +50,24 @@ public class RsvpService : IRsvpService
 
         await _unitOfWork.Rsvps.AddAsync(entity, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        // Send Thank You Email if email was provided
+        if (!string.IsNullOrWhiteSpace(entity.Email))
+        {
+            try
+            {
+                await _emailService.SendRsvpThankYouEmailAsync(
+                    entity.Email,
+                    entity.FullName,
+                    entity.AttendanceStatus.ToString(),
+                    entity.NumberOfGuests,
+                    cancellationToken);
+            }
+            catch
+            {
+                // Fallback: don't block RSVP success if SMTP host is unreachable
+            }
+        }
 
         return _mapper.Map<RsvpDto>(entity);
     }

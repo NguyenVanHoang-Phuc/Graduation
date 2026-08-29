@@ -1,0 +1,145 @@
+using Domain.Entities;
+using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Persistence;
+
+public class GraduationDbContext : DbContext
+{
+    public DbSet<GuestRsvp> GuestRsvps => Set<GuestRsvp>();
+    public DbSet<GraduationWish> GraduationWishes => Set<GraduationWish>();
+    public DbSet<CeremonySetting> CeremonySettings => Set<CeremonySetting>();
+
+    public GraduationDbContext(DbContextOptions<GraduationDbContext> options) : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GraduationDbContext).Assembly);
+    }
+
+    public async Task SeedAsync()
+    {
+        var existingCeremony = await CeremonySettings.FirstOrDefaultAsync();
+        if (existingCeremony == null)
+        {
+            var defaultCeremony = new CeremonySetting
+            {
+                GraduateName = "Nguyễn Văn Hoàng Phúc",
+                GraduateTitle = "Tân Kỹ Sư Công Nghệ Thông Tin",
+                Degree = "Cử Nhân Kỹ Thuật Phần Mềm",
+                Major = "Kỹ Thuật Phần Mềm (Software Engineering)",
+                UniversityName = "Trường Đại học FPT Đà Nẵng",
+                Faculty = "Khoa Công nghệ thông tin và Kỹ thuật phần mềm",
+                CeremonyDateTime = new DateTime(2026, 9, 12, 1, 0, 0, DateTimeKind.Utc), // 08:00 AM Vietnam Time (UTC+7)
+                VenueName = "Đại học FPT Đà Nẵng",
+                Hall = "Khuôn viên Đại học FPT Đà Nẵng",
+                Address = "Đại học FPT Đà Nẵng",
+                GoogleMapUrl = "https://www.google.com/maps/place/Đại+học+FPT+Đà+Nẵng/@15.9688859,108.258311,17z/data=!3m1!4b1!4m6!3m5!1s0x3142116949840599:0x365b35580f52e8d5!8m2!3d15.9688859!4d108.2608913!16s%2Fg%2F11fl0yz7tc?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D",
+                DressCode = "Lịch sự",
+                ContactPhone = "0926 615 662",
+                ContactEmail = "hoangphucnguyenvan1@gmail.com",
+                WelcomeQuote = "Sau 4 năm học tập và nỗ lực, ngày vui tốt nghiệp đã đến! Sự hiện diện của bạn là niềm vinh hạnh và hạnh phúc to lớn đối với mình và gia đình."
+            };
+
+            await CeremonySettings.AddAsync(defaultCeremony);
+        }
+        else
+        {
+            existingCeremony.GraduateName = "Nguyễn Văn Hoàng Phúc";
+            existingCeremony.UniversityName = "Trường Đại học FPT Đà Nẵng";
+            existingCeremony.Faculty = "Khoa Công nghệ thông tin và Kỹ thuật phần mềm";
+            existingCeremony.CeremonyDateTime = new DateTime(2026, 9, 12, 1, 0, 0, DateTimeKind.Utc); // 08:00 AM Vietnam Time (UTC+7)
+            existingCeremony.VenueName = "Đại học FPT Đà Nẵng";
+            existingCeremony.Hall = "Khuôn viên Đại học FPT Đà Nẵng";
+            existingCeremony.Address = "Đại học FPT Đà Nẵng";
+            existingCeremony.GoogleMapUrl = "https://www.google.com/maps/place/Đại+học+FPT+Đà+Nẵng/@15.9688859,108.258311,17z/data=!3m1!4b1!4m6!3m5!1s0x3142116949840599:0x365b35580f52e8d5!8m2!3d15.9688859!4d108.2608913!16s%2Fg%2F11fl0yz7tc?entry=ttu&g_ep=EgoyMDI2MDgyNi4wIKXMDSoASAFQAw%3D%3D";
+            existingCeremony.DressCode = "Lịch sự";
+            existingCeremony.ContactPhone = "0926 615 662";
+            existingCeremony.ContactEmail = "hoangphucnguyenvan1@gmail.com";
+            existingCeremony.AgendaJson = null;
+            existingCeremony.MemoriesJson = null;
+            CeremonySettings.Update(existingCeremony);
+        }
+
+        if (!await GraduationWishes.AnyAsync())
+        {
+            var initialWishes = new List<GraduationWish>
+            {
+                new()
+                {
+                    SenderName = "Minh Tuấn (Team Lead)",
+                    Relationship = "Đồng nghiệp",
+                    Message = "Chúc mừng Tân Kỹ Sư tài năng! Chúc em luôn giữ vững ngọn lửa đam mê, bứt phá mạnh mẽ trên con đường sự nghiệp phía trước nhé!",
+                    AvatarBgColor = "#3b82f6",
+                    Emoji = "🎉",
+                    LikesCount = 12
+                },
+                new()
+                {
+                    SenderName = "Lan Anh & Nhóm Bạn Thân",
+                    Relationship = "Bạn Đại Học",
+                    Message = "Chúc mừng bạn tốt nghiệp xuất sắc! 4 năm thanh xuân cùng nhau thức đêm ôn thi cuối cùng cũng hái quả ngọt rồi. Mãi tự hào về bạn!",
+                    AvatarBgColor = "#ec4899",
+                    Emoji = "🎓",
+                    LikesCount = 28
+                },
+                new()
+                {
+                    SenderName = "Chú Ba & Cô Bảy",
+                    Relationship = "Gia đình",
+                    Message = "Chúc mừng cháu trai đã hoàn thành xuất sắc chặng đường đại học. Cả nhà luôn tự hào về con, chúc con luôn mạnh khỏe và thành công rực rỡ!",
+                    AvatarBgColor = "#eab308",
+                    Emoji = "💐",
+                    LikesCount = 35
+                },
+                new()
+                {
+                    SenderName = "Quốc Bảo",
+                    Relationship = "Bạn Cấp 3",
+                    Message = "Chúc mừng bro nhé! Hẹn ngày tốt nghiệp gặp nhau quẩy hết mình, uống cạn ly chúc mừng kỹ sư công nghệ mới ra lò!",
+                    AvatarBgColor = "#10b981",
+                    Emoji = "🍻",
+                    LikesCount = 15
+                }
+            };
+
+            await GraduationWishes.AddRangeAsync(initialWishes);
+        }
+
+        if (!await GuestRsvps.AnyAsync())
+        {
+            var initialRsvps = new List<GuestRsvp>
+            {
+                new()
+                {
+                    FullName = "Nguyễn Văn Hùng",
+                    Email = "hung.nv@gmail.com",
+                    PhoneNumber = "0912345678",
+                    AttendanceStatus = AttendanceStatus.Attending,
+                    NumberOfGuests = 2,
+                    Notes = "Sẽ đến sớm cùng bạn gái tặng hoa nhé!",
+                    CheckInCode = "GRD801",
+                    IsCheckedIn = false
+                },
+                new()
+                {
+                    FullName = "Trần Thị Mai",
+                    Email = "mai.tt@outlook.com",
+                    PhoneNumber = "0934567890",
+                    AttendanceStatus = AttendanceStatus.AttendingCeremonyOnly,
+                    NumberOfGuests = 1,
+                    Notes = "Chúc mừng Long!",
+                    CheckInCode = "GRD802",
+                    IsCheckedIn = false
+                }
+            };
+
+            await GuestRsvps.AddRangeAsync(initialRsvps);
+        }
+
+        await SaveChangesAsync();
+    }
+}

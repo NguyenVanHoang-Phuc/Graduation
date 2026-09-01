@@ -17,17 +17,31 @@ interface VenueLocationProps {
 }
 
 export default function VenueLocation({ ceremony }: VenueLocationProps) {
-  const ceremonyDate = new Date(ceremony.ceremonyDateTime);
+  // Helper to parse date with Vietnam UTC+7
+  const parseCeremonyDate = (dateStr?: string) => {
+    if (!dateStr) return new Date("2026-09-12T09:00:00+07:00");
+    if (dateStr.includes("+") || dateStr.endsWith("Z")) {
+      return new Date(dateStr);
+    }
+    if (dateStr.includes("T01:00:00") || dateStr.includes(" 01:00:00")) {
+      return new Date("2026-09-12T09:00:00+07:00");
+    }
+    return new Date(`${dateStr.replace(" ", "T")}+07:00`);
+  };
+
+  const ceremonyDate = parseCeremonyDate(ceremony.ceremonyDateTime);
   const formattedDate = ceremonyDate.toLocaleDateString("vi-VN", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "Asia/Ho_Chi_Minh",
   });
   const formattedTime = ceremonyDate.toLocaleTimeString("vi-VN", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
+    timeZone: "Asia/Ho_Chi_Minh",
   });
 
   return (

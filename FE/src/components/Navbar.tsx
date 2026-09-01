@@ -51,13 +51,13 @@ export default function Navbar({ ceremony }: NavbarProps) {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-[#161a1f]/80 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#e5d0ac]/15 shadow-inner">
+        {/* Desktop Navigation Links (Floating Capsule Menu) */}
+        <nav className="hidden md:flex items-center gap-2 bg-[#14181c]/90 backdrop-blur-xl px-5 py-2 rounded-full border border-[#e5d0ac]/25 shadow-2xl">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium text-[#eedec2] hover:text-white hover:bg-[#252b32] transition-all"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#eedec2] hover:text-white hover:bg-[#222830] transition-all"
             >
               <link.icon className="w-3.5 h-3.5 text-[#dfb773]" />
               <span>{link.name}</span>
@@ -65,11 +65,11 @@ export default function Navbar({ ceremony }: NavbarProps) {
           ))}
         </nav>
 
-        {/* Right Action CTA (No public Thống Kê button) */}
+        {/* Right Action CTA */}
         <div className="hidden sm:flex items-center gap-3">
           <a
             href="#rsvp"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#e5d0ac] via-[#dfb773] to-[#c4a675] text-[#111417] text-xs font-black shadow-lg shadow-[#dfb773]/20 hover:scale-105 transition-all duration-300"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#e5d0ac] via-[#dfb773] to-[#c4a675] text-[#111417] text-xs font-black shadow-xl shadow-[#dfb773]/25 hover:scale-105 active:scale-95 transition-all duration-300"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Xác Nhận Tham Dự</span>

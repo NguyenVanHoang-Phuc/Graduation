@@ -69,6 +69,7 @@ export default function ConfirmationCard({
                   day: "numeric",
                   month: "long",
                   year: "numeric",
+                  timeZone: "Asia/Ho_Chi_Minh",
                 })}
               </span>
             </div>
